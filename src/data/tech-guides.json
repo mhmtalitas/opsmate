@@ -1,0 +1,151 @@
+{
+  "apache": {
+    "aws": {
+      "linux": {
+        "name": "Apache on AWS Linux",
+        "steps": [
+          {
+            "command": "sudo apt update && sudo apt upgrade -y",
+            "description": "Sistem paketlerini güncelle",
+            "note": "Bu adım en son güvenlik yamalarını yükler"
+          },
+          {
+            "command": "sudo apt install apache2 -y",
+            "description": "Apache web sunucusunu yükle",
+            "note": "Apache2 ve gerekli modülleri yüklenir"
+          },
+          {
+            "command": "sudo systemctl start apache2",
+            "description": "Apache servisini başlat",
+            "note": "Web sunucusu aktif hale gelir"
+          },
+          {
+            "command": "sudo systemctl enable apache2",
+            "description": "Apache'yi otomatik başlatılacak şekilde ayarla",
+            "note": "Sistem yeniden başlatıldığında Apache otomatik başlar"
+          },
+          {
+            "command": "sudo ufw allow 'Apache Full'",
+            "description": "Güvenlik duvarı kurallarını ayarla",
+            "note": "HTTP (80) ve HTTPS (443) portlarına izin verilir"
+          }
+        ],
+        "requirements": [
+          "Ubuntu 20.04 veya üzeri",
+          "t2.micro veya daha büyük EC2 örneği",
+          "SSH erişimi",
+          "Sudo yetkileri"
+        ],
+        "verification": [
+          {
+            "command": "sudo systemctl status apache2",
+            "description": "Apache durumunu kontrol et"
+          },
+          {
+            "command": "curl localhost",
+            "description": "Yerel bağlantıyı test et"
+          }
+        ]
+      }
+    },
+    "gcp": {
+      "linux": {
+        "name": "Apache on Google Cloud",
+        "steps": [
+          {
+            "command": "sudo apt update && sudo apt upgrade -y",
+            "description": "Sistem paketlerini güncelle",
+            "note": "Paket listesi güncellenir"
+          },
+          {
+            "command": "sudo apt install apache2 -y",
+            "description": "Apache web sunucusunu yükle",
+            "note": "Apache ve bağımlılıkları yüklenir"
+          },
+          {
+            "command": "sudo systemctl start apache2",
+            "description": "Apache servisini başlat",
+            "note": "Web sunucusu başlatılır"
+          },
+          {
+            "command": "sudo gcloud compute firewall-rules create allow-http --allow tcp:80",
+            "description": "Firewall kuralı oluştur",
+            "note": "HTTP trafiğine izin verilir"
+          }
+        ],
+        "requirements": [
+          "Debian/Ubuntu tabanlı sistem",
+          "e2-micro veya daha büyük örnek",
+          "gcloud CLI yüklü olmalı",
+          "Proje yetkisi"
+        ],
+        "verification": [
+          {
+            "command": "sudo systemctl status apache2",
+            "description": "Servis durumunu kontrol et"
+          },
+          {
+            "command": "curl -I http://localhost",
+            "description": "HTTP yanıtını kontrol et"
+          }
+        ]
+      }
+    }
+  },
+  "nginx": {
+    "aws": {
+      "linux": {
+        "name": "NGINX on AWS Linux",
+        "steps": [
+          {
+            "command": "sudo apt update && sudo apt upgrade -y",
+            "description": "Sistem paketlerini güncelle"
+          },
+          {
+            "command": "sudo apt install nginx -y",
+            "description": "NGINX'i yükle"
+          },
+          {
+            "command": "sudo systemctl start nginx",
+            "description": "NGINX servisini başlat"
+          },
+          {
+            "command": "sudo ufw allow 'Nginx Full'",
+            "description": "Güvenlik duvarı kurallarını ayarla"
+          }
+        ],
+        "requirements": [
+          "Ubuntu 20.04 veya üzeri",
+          "t2.micro veya daha büyük EC2 örneği",
+          "80 ve 443 portları açık olmalı"
+        ]
+      }
+    }
+  },
+  "mysql": {
+    "aws": {
+      "linux": {
+        "name": "MySQL on AWS Linux",
+        "steps": [
+          {
+            "command": "sudo apt update",
+            "description": "Paket listesini güncelle"
+          },
+          {
+            "command": "sudo apt install mysql-server -y",
+            "description": "MySQL sunucusunu yükle"
+          },
+          {
+            "command": "sudo mysql_secure_installation",
+            "description": "Güvenlik yapılandırmasını başlat"
+          }
+        ],
+        "requirements": [
+          "En az 1GB RAM",
+          "2GB boş disk alanı",
+          "Sudo yetkileri"
+        ]
+      }
+    }
+  }
+} 

@@ -1,0 +1,325 @@
+{
+  "php": {
+    "aws": {
+      "linux": {
+        "commands": [
+          {
+            "command": "sudo apt update && sudo apt upgrade -y",
+            "description": "Sistem paketlerini güncelle"
+          },
+          {
+            "command": "sudo apt install php8.1 php8.1-cli php8.1-common php8.1-fpm -y",
+            "description": "PHP ve gerekli modülleri yükle"
+          },
+          {
+            "command": "php --version",
+            "description": "PHP sürümünü kontrol et"
+          },
+          {
+            "command": "sudo systemctl start php8.1-fpm",
+            "description": "PHP-FPM servisini başlat"
+          },
+          {
+            "command": "sudo systemctl enable php8.1-fpm",
+            "description": "PHP-FPM servisini otomatik başlatılacak şekilde ayarla"
+          }
+        ],
+        "requirements": [
+          "Ubuntu 20.04 veya üzeri",
+          "Sudo yetkileri",
+          "En az 512MB RAM",
+          "1GB boş disk alanı"
+        ]
+      }
+    },
+    "gcp": {
+      "linux": {
+        "commands": [
+          {
+            "command": "sudo apt update && sudo apt upgrade -y",
+            "description": "Sistem paketlerini güncelle"
+          },
+          {
+            "command": "sudo apt install php8.1 php8.1-cli php8.1-common php8.1-fpm -y",
+            "description": "PHP ve gerekli modülleri yükle"
+          },
+          {
+            "command": "sudo apt install php8.1-mysql php8.1-gd php8.1-curl php8.1-xml -y",
+            "description": "Yaygın PHP eklentilerini yükle"
+          },
+          {
+            "command": "php --version",
+            "description": "PHP sürümünü kontrol et"
+          }
+        ],
+        "requirements": [
+          "Debian/Ubuntu tabanlı sistem",
+          "Compute Engine örneği",
+          "En az 1GB RAM",
+          "Sudo yetkileri"
+        ]
+      }
+    }
+  },
+  "nginx": {
+    "aws": {
+      "linux": {
+        "commands": [
+          {
+            "command": "sudo apt update && sudo apt upgrade -y",
+            "description": "Sistem paketlerini güncelle"
+          },
+          {
+            "command": "sudo apt install nginx -y",
+            "description": "NGINX'i yükle"
+          },
+          {
+            "command": "sudo systemctl start nginx",
+            "description": "NGINX servisini başlat"
+          },
+          {
+            "command": "sudo systemctl enable nginx",
+            "description": "NGINX'i otomatik başlatılacak şekilde ayarla"
+          },
+          {
+            "command": "sudo ufw allow 'Nginx Full'",
+            "description": "Güvenlik duvarında HTTP ve HTTPS portlarını aç"
+          }
+        ],
+        "requirements": [
+          "Ubuntu 20.04 veya üzeri",
+          "t2.micro veya daha büyük EC2 örneği",
+          "En az 512MB RAM",
+          "Sudo yetkileri"
+        ]
+      }
+    },
+    "gcp": {
+      "linux": {
+        "commands": [
+          {
+            "command": "sudo apt update && sudo apt upgrade -y",
+            "description": "Sistem paketlerini güncelle"
+          },
+          {
+            "command": "sudo apt install nginx -y",
+            "description": "NGINX'i yükle"
+          },
+          {
+            "command": "sudo systemctl start nginx",
+            "description": "NGINX servisini başlat"
+          },
+          {
+            "command": "sudo systemctl enable nginx",
+            "description": "NGINX'i otomatik başlatılacak şekilde ayarla"
+          },
+          {
+            "command": "sudo gcloud compute firewall-rules create nginx-http --allow tcp:80",
+            "description": "Firewall kuralı oluşturarak HTTP trafiğine izin ver"
+          },
+          {
+            "command": "sudo gcloud compute firewall-rules create nginx-https --allow tcp:443",
+            "description": "Firewall kuralı oluşturarak HTTPS trafiğine izin ver"
+          }
+        ],
+        "requirements": [
+          "Debian/Ubuntu tabanlı sistem",
+          "e2-micro veya daha büyük örnek",
+          "En az 512MB RAM",
+          "Sudo yetkileri"
+        ]
+      }
+    }
+  },
+  "mysql": {
+    "aws": {
+      "linux": {
+        "commands": [
+          {
+            "command": "sudo apt update && sudo apt upgrade -y",
+            "description": "Sistem paketlerini güncelle"
+          },
+          {
+            "command": "sudo apt install mysql-server -y",
+            "description": "MySQL Server'ı yükle"
+          },
+          {
+            "command": "sudo systemctl start mysql",
+            "description": "MySQL servisini başlat"
+          },
+          {
+            "command": "sudo mysql_secure_installation",
+            "description": "MySQL güvenlik yapılandırmasını başlat"
+          },
+          {
+            "command": "sudo systemctl enable mysql",
+            "description": "MySQL'i otomatik başlatılacak şekilde ayarla"
+          }
+        ],
+        "requirements": [
+          "Ubuntu 20.04 veya üzeri",
+          "En az 1GB RAM",
+          "Sudo yetkileri",
+          "2GB boş disk alanı"
+        ]
+      }
+    }
+  },
+  "docker": {
+    "aws": {
+      "linux": {
+        "commands": [
+          {
+            "command": "sudo apt update && sudo apt upgrade -y",
+            "description": "Sistem paketlerini güncelle"
+          },
+          {
+            "command": "sudo apt install apt-transport-https ca-certificates curl software-properties-common -y",
+            "description": "Gerekli paketleri yükle"
+          },
+          {
+            "command": "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -",
+            "description": "Docker'ın GPG anahtarını ekle"
+          },
+          {
+            "command": "sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\"",
+            "description": "Docker repository'sini ekle"
+          },
+          {
+            "command": "sudo apt update && sudo apt install docker-ce -y",
+            "description": "Docker'ı yükle"
+          },
+          {
+            "command": "sudo systemctl start docker",
+            "description": "Docker servisini başlat"
+          },
+          {
+            "command": "sudo systemctl enable docker",
+            "description": "Docker'ı otomatik başlatılacak şekilde ayarla"
+          },
+          {
+            "command": "sudo usermod -aG docker $USER",
+            "description": "Mevcut kullanıcıyı docker grubuna ekle"
+          }
+        ],
+        "requirements": [
+          "Ubuntu 20.04 veya üzeri",
+          "En az 2GB RAM",
+          "Sudo yetkileri",
+          "64-bit işlemci"
+        ]
+      }
+    }
+  },
+  "kubernetes": {
+    "aws": {
+      "linux": {
+        "commands": [
+          {
+            "command": "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl\"",
+            "description": "kubectl binary dosyasını indir"
+          },
+          {
+            "command": "sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl",
+            "description": "kubectl'i yükle"
+          },
+          {
+            "command": "curl --silent --location \"https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz\" | tar xz -C /tmp",
+            "description": "eksctl'i indir"
+          },
+          {
+            "command": "sudo mv /tmp/eksctl /usr/local/bin",
+            "description": "eksctl'i taşı"
+          },
+          {
+            "command": "eksctl create cluster --name my-cluster --region us-west-2 --nodegroup-name standard-workers --node-type t3.medium --nodes 3 --nodes-min 1 --nodes-max 4",
+            "description": "EKS cluster'ı oluştur"
+          }
+        ],
+        "requirements": [
+          "AWS CLI yapılandırılmış olmalı",
+          "En az t3.medium instance tipi",
+          "IAM yetkileri",
+          "kubectl ve eksctl araçları"
+        ]
+      }
+    }
+  },
+  "apache": {
+    "aws": {
+      "linux": {
+        "commands": [
+          {
+            "command": "sudo apt update && sudo apt upgrade -y",
+            "description": "Sistem paketlerini güncelle"
+          },
+          {
+            "command": "sudo apt install apache2 -y",
+            "description": "Apache web sunucusunu yükle"
+          },
+          {
+            "command": "sudo systemctl start apache2",
+            "description": "Apache servisini başlat"
+          },
+          {
+            "command": "sudo systemctl enable apache2",
+            "description": "Apache'yi sistem başlangıcında otomatik başlatılacak şekilde ayarla"
+          },
+          {
+            "command": "sudo ufw allow 'Apache Full'",
+            "description": "Güvenlik duvarında HTTP (80) ve HTTPS (443) portlarını aç"
+          },
+          {
+            "command": "sudo ufw status",
+            "description": "Güvenlik duvarı kurallarını kontrol et"
+          },
+          {
+            "command": "sudo systemctl status apache2",
+            "description": "Apache servisinin durumunu kontrol et"
+          },
+          {
+            "command": "sudo chown -R $USER:$USER /var/www/html/",
+            "description": "Web dizini üzerinde kullanıcı izinlerini ayarla"
+          },
+          {
+            "command": "echo '<!DOCTYPE html><html><body><h1>Apache Test</h1></body></html>' | sudo tee /var/www/html/index.html",
+            "description": "Test sayfası oluştur"
+          }
+        ],
+        "requirements": [
+          "Ubuntu 20.04 veya üzeri işletim sistemi",
+          "t2.micro veya daha büyük EC2 örneği",
+          "En az 1GB RAM",
+          "Sudo yetkileri",
+          "80 ve 443 portlarına izin veren güvenlik grubu"
+        ],
+        "postInstallation": [
+          "Web tarayıcısından http://sunucu-ip-adresi adresini ziyaret edin",
+          "Apache varsayılan sayfasını görüyorsanız kurulum başarılı",
+          "Özel alan adınızı yönlendirmek için Route 53 kullanabilirsiniz",
+          "SSL sertifikası için Let's Encrypt kullanabilirsiniz"
+        ],
+        "troubleshooting": [
+          {
+            "problem": "Apache başlatılamıyor",
+            "solution": "sudo journalctl -u apache2.service komutu ile hata loglarını kontrol edin"
+          },
+          {
+            "problem": "Sayfa görüntülenemiyor",
+            "solution": "AWS güvenlik grubunda 80 ve 443 portlarının açık olduğunu kontrol edin"
+          },
+          {
+            "problem": "Yetersiz izinler",
+            "solution": "Web dizini izinlerini sudo chmod -R 755 /var/www/html ile düzenleyin"
+          }
+        ],
+        "securityNotes": [
+          "Varsayılan yapılandırma dosyasını yedekleyin: sudo cp /etc/apache2/apache2.conf /etc/apache2/apache2.conf.bak",
+          "ServerTokens Prod ve ServerSignature Off ayarlarını yapın",
+          "Düzenli olarak güvenlik güncellemelerini kontrol edin",
+          "ModSecurity WAF modülünü kullanmayı düşünün"
+        ]
+      }
+    }
+  }
+} 

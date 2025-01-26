@@ -1,0 +1,1194 @@
+{
+  "tools": [
+    {
+      "id": "docker",
+      "name": "Docker",
+      "description": "A platform for developing, shipping, and running applications in containers",
+      "category": "Containerization",
+      "website": "https://www.docker.com",
+      "installation": {
+        "windows": {
+          "steps": [
+            "Download Docker Desktop for Windows from docker.com",
+            "Run the installer (Docker Desktop Installer.exe)",
+            "Enable WSL 2 feature on Windows",
+            "Follow the installation wizard",
+            "Start Docker Desktop from the Windows Start menu",
+            "Verify installation by running: docker --version"
+          ],
+          "requirements": [
+            "Windows 10/11 Pro, Enterprise, or Education",
+            "WSL 2 enabled",
+            "64-bit processor with Second Level Address Translation",
+            "4GB system RAM"
+          ]
+        },
+        "macos": {
+          "steps": [
+            "Download Docker Desktop for Mac from docker.com",
+            "Double-click Docker.dmg to open the installer",
+            "Drag Docker to the Applications folder",
+            "Start Docker from Applications",
+            "Verify installation by running: docker --version"
+          ],
+          "requirements": [
+            "macOS 10.15 or newer",
+            "Apple silicon chip or Intel processor",
+            "4GB system RAM"
+          ]
+        },
+        "gcp": {
+          "requirements": [
+            "Google Cloud Platform account",
+            "Project with Compute Engine API enabled",
+            "gcloud CLI installed locally",
+            "SSH access to the instance"
+          ],
+          "steps": [
+            "Create a new Compute Engine instance: gcloud compute instances create docker-host --zone=us-central1-a --machine-type=e2-medium --image-family=ubuntu-2204-lts --image-project=ubuntu-os-cloud",
+            "Connect to your instance: gcloud compute ssh docker-host --zone=us-central1-a",
+            "Update package list: sudo apt-get update",
+            "Install prerequisites: sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common",
+            "Add Docker's official GPG key: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg",
+            "Add Docker repository: echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable' | sudo tee /etc/apt/sources.list.d/docker.list",
+            "Update package list again: sudo apt-get update",
+            "Install Docker Engine: sudo apt-get install -y docker-ce docker-ce-cli containerd.io",
+            "Add current user to docker group: sudo usermod -aG docker $USER",
+            "Verify installation: docker --version",
+            "Test Docker: docker run hello-world"
+          ]
+        }
+      },
+      "troubleshooting": [
+        {
+          "issue": "Permission denied when running Docker commands",
+          "solution": [
+            "Log out and log back in for group changes to take effect",
+            "Or run: newgrp docker",
+            "Verify groups with: groups $USER"
+          ]
+        },
+        {
+          "issue": "Docker daemon not starting",
+          "solution": [
+            "Check daemon status: sudo systemctl status docker",
+            "Start daemon: sudo systemctl start docker",
+            "Enable daemon: sudo systemctl enable docker",
+            "Check logs: sudo journalctl -u docker.service"
+          ]
+        },
+        {
+          "issue": "Network connectivity issues",
+          "solution": [
+            "Verify firewall rules: sudo ufw status",
+            "Allow Docker traffic: sudo ufw allow 2375/tcp",
+            "Check Docker network: docker network ls",
+            "Restart Docker service: sudo systemctl restart docker"
+          ]
+        }
+      ],
+      "securityBestPractices": [
+        "Keep Docker and base images updated",
+        "Use official images from Docker Hub",
+        "Scan images for vulnerabilities using: docker scan <image>",
+        "Run containers with --security-opt=no-new-privileges",
+        "Limit container resources using --memory and --cpu-shares",
+        "Use Docker Content Trust for image signing"
+      ],
+      "basicCommands": [
+        {
+          "command": "docker ps",
+          "description": "Çalışan konteynerleri listele"
+        },
+        {
+          "command": "docker ps -a",
+          "description": "Tüm konteynerleri listele (durmuş olanlar dahil)"
+        },
+        {
+          "command": "docker images",
+          "description": "Mevcut imajları listele"
+        },
+        {
+          "command": "docker pull image:tag",
+          "description": "Docker Hub'dan imaj indir"
+        },
+        {
+          "command": "docker build -t name .",
+          "description": "Dockerfile'dan bir imaj oluştur"
+        },
+        {
+          "command": "docker run -d -p 80:80 name",
+          "description": "Konteyneri arka planda çalıştır ve port yönlendirmesi yap"
+        },
+        {
+          "command": "docker stop container_id",
+          "description": "Çalışan konteyneri durdur"
+        },
+        {
+          "command": "docker rm container_id",
+          "description": "Konteyneri sil"
+        },
+        {
+          "command": "docker rmi image_id",
+          "description": "İmajı sil"
+        },
+        {
+          "command": "docker logs container_id",
+          "description": "Konteyner loglarını görüntüle"
+        },
+        {
+          "command": "docker exec -it container_id bash",
+          "description": "Çalışan konteynere bağlan"
+        },
+        {
+          "command": "docker-compose up -d",
+          "description": "docker-compose.yml dosyasındaki servisleri başlat"
+        },
+        {
+          "command": "docker network ls",
+          "description": "Docker ağlarını listele"
+        },
+        {
+          "command": "docker volume ls",
+          "description": "Docker volume'lerini listele"
+        }
+      ],
+      "networkingTips": [
+        {
+          "title": "Port Forwarding",
+          "description": "Map container ports to host: docker run -p host_port:container_port image_name"
+        },
+        {
+          "title": "Custom Network",
+          "description": "Create a user-defined network: docker network create my_network"
+        },
+        {
+          "title": "Container DNS",
+          "description": "Containers on the same network can resolve each other by name"
+        }
+      ],
+      "tutorials": {
+        "gettingStarted": {
+          "title": "Getting Started with Docker",
+          "steps": [
+            {
+              "title": "Understanding Docker Concepts",
+              "content": "Docker uses containers to package applications and dependencies. A container is a lightweight, standalone executable package that includes everything needed to run an application.",
+              "concepts": [
+                {
+                  "term": "Image",
+                  "definition": "A template for creating containers, like a snapshot of an application and its environment"
+                },
+                {
+                  "term": "Container",
+                  "definition": "A running instance of an image, isolated from other containers and the host system"
+                },
+                {
+                  "term": "Dockerfile",
+                  "definition": "A text file containing instructions to build a Docker image"
+                }
+              ]
+            },
+            {
+              "title": "Your First Container",
+              "steps": [
+                {
+                  "command": "docker run hello-world",
+                  "explanation": "Downloads and runs the hello-world image to verify Docker installation"
+                },
+                {
+                  "command": "docker run -d -p 80:80 nginx",
+                  "explanation": "Runs an Nginx web server container. -d runs in background, -p maps port 80 on host to port 80 in container"
+                }
+              ]
+            }
+          ]
+        },
+        "commonUseCases": [
+          {
+            "title": "Web Application Development",
+            "example": {
+              "description": "Running a Node.js application in Docker",
+              "dockerfile": "FROM node:14\nWORKDIR /app\nCOPY package*.json ./\nRUN npm install\nCOPY . .\nEXPOSE 3000\nCMD [\"npm\", \"start\"]",
+              "commands": [
+                {
+                  "command": "docker build -t myapp .",
+                  "explanation": "Builds image named 'myapp' using Dockerfile in current directory"
+                },
+                {
+                  "command": "docker run -d -p 3000:3000 myapp",
+                  "explanation": "Runs the application container, mapping port 3000"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "kubernetes",
+      "name": "Kubernetes",
+      "description": "An open-source container orchestration platform for automating deployment, scaling, and management",
+      "category": "Container Orchestration",
+      "website": "https://kubernetes.io",
+      "installation": {
+        "windows": {
+          "steps": [
+            "Install Docker Desktop for Windows",
+            "Enable Kubernetes in Docker Desktop settings",
+            "Install kubectl using: choco install kubernetes-cli",
+            "Verify installation: kubectl version",
+            "Optional: Install Minikube for local testing"
+          ],
+          "requirements": [
+            "Windows 10/11 Pro or Enterprise",
+            "Docker Desktop installed",
+            "6GB system RAM minimum",
+            "Chocolatey package manager (recommended)"
+          ]
+        },
+        "macos": {
+          "steps": [
+            "Install Docker Desktop for Mac",
+            "Enable Kubernetes in Docker Desktop settings",
+            "Install kubectl using: brew install kubectl",
+            "Verify installation: kubectl version",
+            "Optional: Install Minikube using: brew install minikube"
+          ],
+          "requirements": [
+            "macOS 10.15 or newer",
+            "Docker Desktop installed",
+            "6GB system RAM minimum",
+            "Homebrew package manager (recommended)"
+          ]
+        },
+        "linux": {
+          "requirements": [
+            "Ubuntu 20.04 or newer / CentOS 7+",
+            "2 CPUs or more",
+            "2GB of free memory",
+            "20GB of free disk space",
+            "Container runtime (Docker) installed",
+            "Internet connection"
+          ],
+          "steps": [
+            "Install Docker: sudo apt-get install docker.io -y",
+            "Start and enable Docker: sudo systemctl start docker && sudo systemctl enable docker",
+            "Install kubectl: curl -LO https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl",
+            "Make kubectl executable: chmod +x kubectl",
+            "Move kubectl to system path: sudo mv kubectl /usr/local/bin/",
+            "Download Minikube: curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64",
+            "Make Minikube executable: chmod +x minikube",
+            "Install Minikube: sudo mv minikube /usr/local/bin/",
+            "Start Minikube: minikube start --driver=docker",
+            "Verify installation: kubectl cluster-info"
+          ]
+        }
+      },
+      "minikubeGuide": {
+        "basicOperations": [
+          {
+            "command": "minikube start",
+            "description": "Start local Kubernetes cluster"
+          },
+          {
+            "command": "minikube stop",
+            "description": "Stop local Kubernetes cluster"
+          },
+          {
+            "command": "minikube delete",
+            "description": "Delete local Kubernetes cluster"
+          },
+          {
+            "command": "minikube dashboard",
+            "description": "Access Kubernetes dashboard"
+          },
+          {
+            "command": "minikube status",
+            "description": "Check cluster status"
+          }
+        ],
+        "sampleDeployment": {
+          "description": "Deploy a sample nginx application",
+          "steps": [
+            "Create deployment: kubectl create deployment nginx --image=nginx",
+            "Expose deployment: kubectl expose deployment nginx --type=NodePort --port=80",
+            "Get service URL: minikube service nginx --url",
+            "Access application in browser using the URL",
+            "Scale deployment: kubectl scale deployment nginx --replicas=3",
+            "View pods: kubectl get pods"
+          ]
+        },
+        "troubleshooting": [
+          {
+            "issue": "Insufficient resources",
+            "solution": [
+              "Free up system resources",
+              "Adjust resource allocation: minikube start --memory=4096 --cpus=2",
+              "Delete and recreate cluster with new resources"
+            ]
+          },
+          {
+            "issue": "Docker driver issues",
+            "solution": [
+              "Ensure Docker is running: systemctl status docker",
+              "Add user to docker group: sudo usermod -aG docker $USER",
+              "Log out and log back in",
+              "Try different driver: minikube start --driver=virtualbox"
+            ]
+          },
+          {
+            "issue": "Network connectivity",
+            "solution": [
+              "Check DNS settings: cat /etc/resolv.conf",
+              "Verify network plugin: minikube logs | grep -i network",
+              "Try different network plugin: minikube start --network-plugin=cni"
+            ]
+          },
+          {
+            "issue": "Pods stuck in pending state",
+            "solution": [
+              "Check resources: kubectl describe pod <pod-name>",
+              "Verify node capacity: kubectl describe node",
+              "Check for taints: kubectl get nodes -o json | jq '.items[].spec.taints'"
+            ]
+          }
+        ],
+        "bestPractices": [
+          "Regularly update Minikube to latest version",
+          "Use resource limits in deployments",
+          "Enable metrics server for monitoring",
+          "Use persistent volumes for stateful applications",
+          "Implement health checks in deployments"
+        ],
+        "advancedFeatures": [
+          {
+            "feature": "Ingress",
+            "commands": [
+              "Enable ingress: minikube addons enable ingress",
+              "Verify ingress: kubectl get pods -n ingress-nginx"
+            ]
+          },
+          {
+            "feature": "LoadBalancer",
+            "commands": [
+              "Enable metallb: minikube addons enable metallb",
+              "Configure IP pool: minikube addons configure metallb"
+            ]
+          },
+          {
+            "feature": "Metrics Server",
+            "commands": [
+              "Enable metrics: minikube addons enable metrics-server",
+              "Verify metrics: kubectl top nodes"
+            ]
+          }
+        ]
+      },
+      "basicCommands": [
+        {
+          "command": "kubectl get pods",
+          "description": "List all pods in the current namespace"
+        },
+        {
+          "command": "kubectl apply -f",
+          "description": "Apply a configuration to a resource"
+        },
+        {
+          "command": "kubectl delete",
+          "description": "Delete resources"
+        },
+        {
+          "command": "kubectl get nodes",
+          "description": "List all nodes in the cluster"
+        },
+        {
+          "command": "kubectl get deployments",
+          "description": "List all deployments"
+        },
+        {
+          "command": "kubectl get services",
+          "description": "List all services"
+        },
+        {
+          "command": "kubectl logs <pod-name>",
+          "description": "View pod logs"
+        },
+        {
+          "command": "kubectl exec -it <pod-name> -- /bin/bash",
+          "description": "Access pod shell"
+        }
+      ],
+      "tutorials": {
+        "gettingStarted": {
+          "title": "Getting Started with Kubernetes",
+          "steps": [
+            {
+              "title": "Understanding Kubernetes Concepts",
+              "content": "Kubernetes is a container orchestration platform that manages containerized applications across multiple hosts.",
+              "concepts": [
+                {
+                  "term": "Pod",
+                  "definition": "Smallest deployable unit in Kubernetes, contains one or more containers"
+                },
+                {
+                  "term": "Service",
+                  "definition": "Provides stable network endpoint to access pods"
+                },
+                {
+                  "term": "Deployment",
+                  "definition": "Manages the deployment and scaling of pods"
+                }
+              ]
+            }
+          ]
+        },
+        "deploymentExamples": [
+          {
+            "title": "Deploy Simple Web Application",
+            "yaml": {
+              "filename": "deployment.yaml",
+              "content": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web-app\nspec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      containers:\n      - name: nginx\n        image: nginx:latest\n        ports:\n        - containerPort: 80",
+              "explanation": "Creates a deployment with 3 replicas of an Nginx container"
+            },
+            "steps": [
+              {
+                "command": "kubectl apply -f deployment.yaml",
+                "explanation": "Creates or updates the deployment using the YAML file"
+              },
+              {
+                "command": "kubectl get pods",
+                "explanation": "Lists all pods to verify deployment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "git",
+      "name": "Git",
+      "description": "Distributed version control system for tracking changes in source code",
+      "category": "Version Control",
+      "website": "https://git-scm.com",
+      "installation": {
+        "windows": {
+          "steps": [
+            "Download Git for Windows installer from git-scm.com",
+            "Run the installer (Git-X.XX.X-64-bit.exe)",
+            "Choose default editor and PATH options",
+            "Complete installation wizard",
+            "Verify installation: git --version"
+          ],
+          "requirements": [
+            "Windows 7 or newer",
+            "32-bit or 64-bit OS"
+          ]
+        },
+        "macos": {
+          "steps": [
+            "Install Xcode Command Line Tools: xcode-select --install",
+            "Install Git using Homebrew: brew install git",
+            "Configure Git username and email",
+            "Verify installation: git --version"
+          ],
+          "requirements": [
+            "macOS 10.13 or newer",
+            "Xcode Command Line Tools",
+            "Homebrew (recommended)"
+          ]
+        }
+      },
+      "basicCommands": [
+        {
+          "command": "git init",
+          "description": "Initialize a new Git repository"
+        },
+        {
+          "command": "git clone",
+          "description": "Clone a repository into a new directory"
+        },
+        {
+          "command": "git commit",
+          "description": "Record changes to the repository"
+        }
+      ]
+    },
+    {
+      "id": "nginx",
+      "name": "NGINX",
+      "description": "A high-performance HTTP server, reverse proxy, and load balancer",
+      "category": "Web Server",
+      "website": "https://nginx.org",
+      "installation": {
+        "windows": {
+          "requirements": [
+            "Windows Server 2012 R2 or later",
+            "Administrator privileges",
+            "PowerShell 5.0 or later"
+          ],
+          "steps": [
+            "Download NGINX for Windows from nginx.org",
+            "Extract the zip file to C:\\nginx",
+            "Open PowerShell as Administrator",
+            "Navigate to C:\\nginx",
+            "Run: .\\nginx.exe to start the server",
+            "Open browser and visit http://localhost to verify"
+          ]
+        },
+        "macos": {
+          "requirements": [
+            "macOS 10.13 veya üzeri",
+            "Homebrew paket yöneticisi",
+            "Terminal erişimi"
+          ],
+          "steps": [
+            "Homebrew'i güncelleyin: brew update",
+            "NGINX'i yükleyin: brew install nginx",
+            "NGINX'i başlatın: brew services start nginx",
+            "Otomatik başlatmayı etkinleştirin: brew services start nginx",
+            "Durumu kontrol edin: brew services list | grep nginx",
+            "Test etmek için tarayıcıda http://localhost:8080 adresini açın",
+            "Yapılandırma dosyası: /usr/local/etc/nginx/nginx.conf",
+            "Web kök dizini: /usr/local/var/www"
+          ]
+        },
+        "linux": {
+          "requirements": [
+            "AWS EC2 instance running Amazon Linux 2 or Ubuntu",
+            "SSH access to the server",
+            "sudo privileges"
+          ],
+          "steps": [
+            "Connect to your EC2 instance: ssh -i your-key.pem ec2-user@your-instance-ip",
+            "Update the package list: sudo yum update -y",
+            "Install NGINX: sudo yum install nginx -y",
+            "Start NGINX service: sudo systemctl start nginx",
+            "Enable NGINX to start on boot: sudo systemctl enable nginx",
+            "Configure firewall: sudo firewall-cmd --permanent --add-service=http",
+            "Reload firewall: sudo firewall-cmd --reload",
+            "Verify NGINX status: sudo systemctl status nginx",
+            "Check server IP in browser: http://your-instance-public-ip"
+          ]
+        }
+      },
+      "basicCommands": [
+        {
+          "command": "nginx -v",
+          "description": "NGINX sürümünü görüntüle"
+        },
+        {
+          "command": "nginx -t",
+          "description": "Yapılandırma dosyasını test et"
+        },
+        {
+          "command": "nginx -s reload",
+          "description": "Yapılandırmayı yeniden yükle"
+        },
+        {
+          "command": "nginx -s stop",
+          "description": "NGINX'i durdur"
+        },
+        {
+          "command": "nginx -s quit",
+          "description": "NGINX'i nazikçe durdur (mevcut bağlantıları kapat)"
+        },
+        {
+          "command": "nginx -c /path/to/config",
+          "description": "Özel yapılandırma dosyası kullan"
+        },
+        {
+          "command": "systemctl status nginx",
+          "description": "NGINX servis durumunu kontrol et"
+        },
+        {
+          "command": "tail -f /var/log/nginx/access.log",
+          "description": "Erişim loglarını canlı izle"
+        },
+        {
+          "command": "tail -f /var/log/nginx/error.log",
+          "description": "Hata loglarını canlı izle"
+        }
+      ],
+      "configExamples": [
+        {
+          "title": "Basic Server Block",
+          "description": "Configure a basic virtual host",
+          "code": "server {\n    listen 80;\n    server_name example.com;\n    root /var/www/html;\n\n    location / {\n        try_files $uri $uri/ =404;\n    }\n}"
+        },
+        {
+          "title": "Reverse Proxy",
+          "description": "Configure NGINX as a reverse proxy",
+          "code": "server {\n    listen 80;\n    server_name proxy.example.com;\n\n    location / {\n        proxy_pass http://backend_server;\n        proxy_set_header Host $host;\n        proxy_set_header X-Real-IP $remote_addr;\n    }\n}"
+        }
+      ],
+      "securityNotes": [
+        "Always keep NGINX updated to the latest stable version",
+        "Use SSL/TLS certificates for HTTPS",
+        "Configure proper file permissions",
+        "Disable server tokens in production",
+        "Implement rate limiting for DDoS protection"
+      ]
+    },
+    {
+      "id": "jenkins",
+      "name": "Jenkins",
+      "description": "An open-source automation server for building, deploying, and automating software projects",
+      "category": "CI/CD",
+      "website": "https://jenkins.io",
+      "installation": {
+        "windows": {
+          "requirements": [
+            "Windows 10/11 veya Windows Server 2016+",
+            "Java 11 veya Java 17",
+            "2GB RAM minimum (4GB önerilen)",
+            "Yönetici hakları"
+          ],
+          "steps": [
+            "Java JDK'yı indirin ve yükleyin (AdoptOpenJDK önerilir)",
+            "JAVA_HOME ortam değişkenini ayarlayın",
+            "Jenkins.war dosyasını jenkins.io adresinden indirin",
+            "Komut istemini yönetici olarak açın",
+            "İndirilen dizine gidin",
+            "java -jar jenkins.war --httpPort=8080 komutunu çalıştırın",
+            "Tarayıcıda http://localhost:8080 adresini açın",
+            "İlk şifreyi görüntüleyin: %USERPROFILE%\\.jenkins\\secrets\\initialAdminPassword",
+            "Kurulum sihirbazını takip edin",
+            "Windows servisi olarak yüklemek için Jenkins Windows installer'ı kullanın"
+          ]
+        },
+        "macos": {
+          "requirements": [
+            "macOS 10.13 veya üzeri",
+            "Java 11 veya Java 17",
+            "2GB RAM minimum (4GB önerilen)",
+            "Homebrew paket yöneticisi"
+          ],
+          "steps": [
+            "Homebrew'i güncelleyin: brew update",
+            "Java'yı yükleyin: brew install openjdk@11",
+            "Jenkins'i yükleyin: brew install jenkins-lts",
+            "Jenkins'i başlatın: brew services start jenkins-lts",
+            "Tarayıcıda http://localhost:8080 adresini açın",
+            "İlk şifreyi görüntüleyin: cat ~/.jenkins/secrets/initialAdminPassword",
+            "Kurulum sihirbazını takip edin",
+            "Önerilen eklentileri yükleyin"
+          ]
+        }
+      },
+      "githubIntegration": {
+        "steps": [
+          "Install GitHub plugin from Jenkins Plugin Manager",
+          "Go to Jenkins > Manage Jenkins > Configure System",
+          "Add GitHub Server under GitHub section",
+          "Create GitHub Personal Access Token with repo and admin:repo_hook permissions",
+          "Add GitHub credentials in Jenkins",
+          "Test the connection to verify setup"
+        ],
+        "webhookSetup": [
+          "Go to GitHub repository settings",
+          "Add webhook: http://your-jenkins-url/github-webhook/",
+          "Select 'application/json' content type",
+          "Choose events to trigger webhook (usually push events)",
+          "Save webhook configuration"
+        ]
+      },
+      "pipelineExample": {
+        "description": "Sample Jenkinsfile for Node.js application",
+        "code": "pipeline {\n    agent any\n\n    tools {\n        nodejs 'node-16'\n    }\n\n    stages {\n        stage('Checkout') {\n            steps {\n                checkout scm\n            }\n        }\n\n        stage('Install') {\n            steps {\n                sh 'npm install'\n            }\n        }\n\n        stage('Test') {\n            steps {\n                sh 'npm test'\n            }\n        }\n\n        stage('Build') {\n            steps {\n                sh 'npm run build'\n            }\n        }\n\n        stage('Deploy') {\n            when {\n                branch 'main'\n            }\n            steps {\n                sh './deploy.sh'\n            }\n        }\n    }\n\n    post {\n        always {\n            cleanWs()\n        }\n    }\n}"
+      },
+      "basicCommands": [
+        {
+          "command": "jenkins --version",
+          "description": "Jenkins sürümünü görüntüle"
+        },
+        {
+          "command": "jenkins start",
+          "description": "Jenkins servisini başlat"
+        },
+        {
+          "command": "jenkins restart",
+          "description": "Jenkins servisini yeniden başlat"
+        },
+        {
+          "command": "jenkins stop",
+          "description": "Jenkins servisini durdur"
+        },
+        {
+          "command": "jenkins-cli list-jobs",
+          "description": "List all Jenkins jobs"
+        }
+      ],
+      "jobConfiguration": {
+        "steps": [
+          "Click 'New Item' in Jenkins dashboard",
+          "Select 'Pipeline' and enter job name",
+          "Configure GitHub project URL",
+          "Set Build Triggers to 'GitHub hook trigger for GITScm polling'",
+          "Add Pipeline script from SCM",
+          "Specify repository URL and credentials",
+          "Set branch specifier (e.g., */main)",
+          "Save configuration"
+        ]
+      },
+      "troubleshooting": [
+        {
+          "issue": "Jenkins not starting",
+          "solution": [
+            "Check Java installation: java -version",
+            "Verify Jenkins service: sudo systemctl status jenkins",
+            "Check logs: sudo tail -f /var/log/jenkins/jenkins.log",
+            "Ensure correct permissions: sudo chown -R jenkins:jenkins /var/lib/jenkins"
+          ]
+        },
+        {
+          "issue": "GitHub webhook not triggering",
+          "solution": [
+            "Verify webhook URL is correct",
+            "Check Jenkins system log for webhook payload",
+            "Ensure firewall allows incoming connections to port 8080",
+            "Verify GitHub plugin configuration"
+          ]
+        },
+        {
+          "issue": "Pipeline build failing",
+          "solution": [
+            "Check Jenkinsfile syntax",
+            "Verify required tools are installed on Jenkins server",
+            "Review build logs for specific errors",
+            "Test pipeline steps manually"
+          ]
+        }
+      ],
+      "securityBestPractices": [
+        "Use HTTPS for Jenkins web interface",
+        "Enable authentication and authorization",
+        "Regularly update Jenkins and plugins",
+        "Use credentials management for sensitive data",
+        "Implement role-based access control",
+        "Enable audit logging",
+        "Use secrets for sensitive environment variables"
+      ]
+    },
+    {
+      "id": "aws-cli",
+      "name": "AWS CLI",
+      "description": "Command line interface for interacting with AWS services",
+      "category": "Cloud Management",
+      "website": "https://aws.amazon.com/cli/",
+      "installation": {
+        "windows": {
+          "requirements": [
+            "Windows 10/11",
+            "PowerShell 5.0 veya üzeri",
+            "AWS hesabı ve erişim kimlik bilgileri"
+          ],
+          "steps": [
+            "AWS CLI MSI yükleyicisini aws.amazon.com/cli adresinden indirin",
+            "İndirilen .msi dosyasını çalıştırın",
+            "Yükleme sihirbazını takip edin",
+            "PowerShell'i açın",
+            "Yüklemeyi doğrulayın: aws --version",
+            "AWS CLI'yi yapılandırın: aws configure",
+            "AWS Access Key ID'yi girin",
+            "AWS Secret Access Key'i girin",
+            "Varsayılan bölgeyi girin (örn: us-east-1)",
+            "Çıktı formatını girin (json önerilir)"
+          ]
+        },
+        "macos": {
+          "requirements": [
+            "macOS 10.13 veya üzeri",
+            "Homebrew paket yöneticisi",
+            "AWS hesabı ve erişim kimlik bilgileri"
+          ],
+          "steps": [
+            "Homebrew'i güncelleyin: brew update",
+            "AWS CLI'yi yükleyin: brew install awscli",
+            "Yüklemeyi doğrulayın: aws --version",
+            "AWS CLI'yi yapılandırın: aws configure",
+            "AWS Access Key ID'yi girin",
+            "AWS Secret Access Key'i girin",
+            "Varsayılan bölgeyi girin (örn: us-east-1)",
+            "Çıktı formatını girin (json önerilir)"
+          ]
+        },
+        "linux": {
+          "requirements": [
+            "Python 3.7 or later",
+            "pip (Python package manager)",
+            "AWS account and access credentials",
+            "sudo privileges"
+          ],
+          "steps": [
+            "Install Python and pip: sudo apt install python3 python3-pip -y",
+            "Install AWS CLI: curl 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip' -o 'awscliv2.zip'",
+            "Unzip the installer: unzip awscliv2.zip",
+            "Run the install script: sudo ./aws/install",
+            "Verify installation: aws --version",
+            "Configure AWS CLI: aws configure",
+            "Enter AWS Access Key ID when prompted",
+            "Enter AWS Secret Access Key when prompted",
+            "Enter default region (e.g., us-east-1)",
+            "Enter output format (json recommended)"
+          ]
+        }
+      },
+      "credentialManagement": {
+        "bestPractices": [
+          "Use IAM roles instead of access keys when possible",
+          "Never commit AWS credentials to version control",
+          "Rotate access keys regularly",
+          "Use separate access keys for different environments",
+          "Enable MFA for AWS account"
+        ],
+        "configurationFiles": [
+          {
+            "file": "~/.aws/credentials",
+            "description": "Stores AWS access keys",
+            "example": "[default]\naws_access_key_id = YOUR_ACCESS_KEY\naws_secret_access_key = YOUR_SECRET_KEY"
+          },
+          {
+            "file": "~/.aws/config",
+            "description": "Stores AWS CLI settings",
+            "example": "[default]\nregion = us-east-1\noutput = json"
+          }
+        ]
+      },
+      "basicCommands": [
+        {
+          "command": "aws configure",
+          "description": "AWS CLI yapılandırmasını ayarla"
+        },
+        {
+          "command": "aws ec2 describe-instances",
+          "description": "EC2 örneklerini listele"
+        },
+        {
+          "command": "aws ec2 start-instances --instance-ids i-1234567890abcdef0",
+          "description": "Belirli bir EC2 örneğini başlat"
+        },
+        {
+          "command": "aws ec2 stop-instances --instance-ids i-1234567890abcdef0",
+          "description": "Belirli bir EC2 örneğini durdur"
+        },
+        {
+          "command": "aws ec2 describe-security-groups",
+          "description": "Güvenlik gruplarını listele"
+        },
+        {
+          "command": "aws s3 ls",
+          "description": "S3 kovalarını listele"
+        },
+        {
+          "command": "aws s3 cp file.txt s3://my-bucket/",
+          "description": "Dosyayı S3 kovasına yükle"
+        },
+        {
+          "command": "aws s3 sync . s3://my-bucket",
+          "description": "Dizini S3 kovası ile senkronize et"
+        },
+        {
+          "command": "aws lambda list-functions",
+          "description": "Lambda fonksiyonlarını listele"
+        },
+        {
+          "command": "aws rds describe-db-instances",
+          "description": "RDS veritabanı örneklerini listele"
+        },
+        {
+          "command": "aws iam list-users",
+          "description": "IAM kullanıcılarını listele"
+        }
+      ],
+      "usefulScripts": [
+        {
+          "name": "List Running Instances",
+          "description": "Show all running EC2 instances with their details",
+          "script": "aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query 'Reservations[].Instances[].[InstanceId,InstanceType,State.Name,Tags[?Key==`Name`].Value|[0]]' --output table"
+        },
+        {
+          "name": "Create Snapshot",
+          "description": "Create snapshot of an EBS volume",
+          "script": "aws ec2 create-snapshot --volume-id vol-1234567890abcdef0 --description 'Backup $(date +%Y-%m-%d)'"
+        }
+      ],
+      "troubleshooting": [
+        {
+          "issue": "AWS CLI not found",
+          "solution": [
+            "Verify installation: which aws",
+            "Check PATH environment variable",
+            "Reinstall AWS CLI if necessary"
+          ]
+        },
+        {
+          "issue": "Authentication failure",
+          "solution": [
+            "Check credentials in ~/.aws/credentials",
+            "Verify IAM user permissions",
+            "Ensure access keys are active in IAM console",
+            "Check system time is accurate"
+          ]
+        },
+        {
+          "issue": "Region-related errors",
+          "solution": [
+            "Verify default region in ~/.aws/config",
+            "Use --region parameter to override default",
+            "Ensure service is available in specified region"
+          ]
+        }
+      ],
+      "securityTips": [
+        {
+          "title": "Access Key Management",
+          "tips": [
+            "Store access keys securely using AWS Secrets Manager",
+            "Use environment variables for temporary access",
+            "Implement least privilege principle for IAM users",
+            "Monitor AWS CloudTrail for API usage"
+          ]
+        },
+        {
+          "title": "Instance Security",
+          "tips": [
+            "Use security groups as firewalls",
+            "Keep AMIs updated",
+            "Enable detailed monitoring",
+            "Use AWS Systems Manager for patch management"
+          ]
+        }
+      ],
+      "commonPatterns": [
+        {
+          "title": "Instance Tagging",
+          "command": "aws ec2 create-tags --resources i-1234567890abcdef0 --tags Key=Environment,Value=Production",
+          "description": "Add tags to track resources"
+        },
+        {
+          "title": "Resource Monitoring",
+          "command": "aws cloudwatch get-metric-statistics --namespace AWS/EC2 --metric-name CPUUtilization --dimensions Name=InstanceId,Value=i-1234567890abcdef0",
+          "description": "Monitor instance metrics"
+        }
+      ]
+    },
+    {
+      "id": "gcloud",
+      "name": "Google Cloud SDK",
+      "description": "Command-line interface for Google Cloud Platform services",
+      "category": "Cloud Management",
+      "website": "https://cloud.google.com/sdk",
+      "installation": {
+        "windows": {
+          "requirements": [
+            "Windows 10/11",
+            "Python 3.5+",
+            "Google Cloud hesabı",
+            "Yönetici hakları"
+          ],
+          "steps": [
+            "Google Cloud SDK yükleyicisini cloud.google.com/sdk/docs/install adresinden indirin",
+            "İndirilen .exe dosyasını çalıştırın",
+            "Yükleme sihirbazını takip edin",
+            "PowerShell'i açın",
+            "SDK'yı başlatın: gcloud init",
+            "Google hesabınızla giriş yapın: gcloud auth login",
+            "Projenizi seçin: gcloud config set project PROJECT_ID",
+            "Yüklemeyi doğrulayın: gcloud --version"
+          ]
+        },
+        "macos": {
+          "requirements": [
+            "macOS 10.13 veya üzeri",
+            "Python 3.5+",
+            "Google Cloud hesabı",
+            "Homebrew paket yöneticisi"
+          ],
+          "steps": [
+            "Homebrew'i güncelleyin: brew update",
+            "Google Cloud SDK'yı yükleyin: brew install --cask google-cloud-sdk",
+            "Terminal'i açın",
+            "SDK'yı başlatın: gcloud init",
+            "Google hesabınızla giriş yapın: gcloud auth login",
+            "Projenizi seçin: gcloud config set project PROJECT_ID",
+            "Yüklemeyi doğrulayın: gcloud --version"
+          ]
+        },
+        "linux": {
+          "requirements": [
+            "Python 2.7 or 3.5+",
+            "A Google Cloud account",
+            "sudo privileges",
+            "curl or wget installed"
+          ],
+          "steps": [
+            "Add Google Cloud SDK repository: echo 'deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main' | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list",
+            "Install prerequisites: sudo apt-get install apt-transport-https ca-certificates gnupg",
+            "Add Google Cloud public key: curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -",
+            "Update package list: sudo apt-get update",
+            "Install Google Cloud SDK: sudo apt-get install google-cloud-sdk",
+            "Initialize SDK: gcloud init",
+            "Authenticate with Google Cloud: gcloud auth login",
+            "Set project: gcloud config set project YOUR_PROJECT_ID",
+            "Verify installation: gcloud --version"
+          ]
+        }
+      },
+      "authentication": {
+        "methods": [
+          {
+            "type": "User Account",
+            "command": "gcloud auth login",
+            "description": "Interactive login for user accounts"
+          },
+          {
+            "type": "Service Account",
+            "command": "gcloud auth activate-service-account --key-file=KEY_FILE",
+            "description": "Authenticate using service account credentials"
+          }
+        ],
+        "serviceAccounts": {
+          "steps": [
+            "Go to IAM & Admin > Service Accounts in Google Cloud Console",
+            "Click Create Service Account",
+            "Enter name and description",
+            "Assign appropriate roles",
+            "Create and download JSON key file",
+            "Keep key file secure and never commit to version control"
+          ],
+          "bestPractices": [
+            "Use principle of least privilege when assigning roles",
+            "Rotate service account keys regularly",
+            "Use separate service accounts for different environments",
+            "Monitor service account usage with Cloud Audit Logs"
+          ]
+        }
+      },
+      "basicCommands": [
+        {
+          "command": "gcloud init",
+          "description": "Google Cloud SDK'yı yapılandır"
+        },
+        {
+          "command": "gcloud config list",
+          "description": "Mevcut yapılandırmayı görüntüle"
+        },
+        {
+          "command": "gcloud config set project PROJECT_ID",
+          "description": "Varsayılan projeyi ayarla"
+        },
+        {
+          "command": "gcloud config set compute/zone ZONE",
+          "description": "Varsayılan hesaplama bölgesini ayarla"
+        },
+        {
+          "command": "gcloud compute instances list",
+          "description": "Tüm VM örneklerini listele"
+        },
+        {
+          "command": "gcloud compute instances create INSTANCE_NAME",
+          "description": "Yeni bir VM örneği oluştur"
+        },
+        {
+          "command": "gcloud compute instances start INSTANCE_NAME",
+          "description": "VM örneğini başlat"
+        },
+        {
+          "command": "gcloud compute instances stop INSTANCE_NAME",
+          "description": "VM örneğini durdur"
+        },
+        {
+          "command": "gcloud container clusters list",
+          "description": "Kubernetes kümelerini listele"
+        },
+        {
+          "command": "gcloud container clusters create CLUSTER_NAME",
+          "description": "Yeni Kubernetes kümesi oluştur"
+        },
+        {
+          "command": "gcloud storage ls",
+          "description": "Cloud Storage kovalarını listele"
+        },
+        {
+          "command": "gcloud sql instances list",
+          "description": "Cloud SQL örneklerini listele"
+        },
+        {
+          "command": "gcloud functions list",
+          "description": "Cloud Functions fonksiyonlarını listele"
+        }
+      ],
+      "securityBestPractices": [
+        {
+          "title": "IAM Configuration",
+          "practices": [
+            "Use custom roles instead of primitive roles",
+            "Implement role hierarchy",
+            "Regular access review",
+            "Enable Cloud Asset Inventory"
+          ]
+        },
+        {
+          "title": "Network Security",
+          "practices": [
+            "Use VPC Service Controls",
+            "Enable Cloud Armor for DDoS protection",
+            "Implement private Google Access",
+            "Use Identity-Aware Proxy"
+          ]
+        }
+      ],
+      "commonScripts": [
+        {
+          "name": "List Resources",
+          "script": "gcloud asset search-all-resources",
+          "description": "Search for resources across project"
+        },
+        {
+          "name": "Audit IAM Policies",
+          "script": "gcloud asset search-all-iam-policies",
+          "description": "Search for IAM policies"
+        }
+      ],
+      "troubleshooting": [
+        {
+          "issue": "Authentication errors",
+          "solution": [
+            "Check credentials: gcloud auth list",
+            "Revoke and reauthenticate: gcloud auth revoke && gcloud auth login",
+            "Verify project permissions",
+            "Check service account key validity"
+          ]
+        },
+        {
+          "issue": "API enablement",
+          "solution": [
+            "List enabled APIs: gcloud services list",
+            "Enable required API: gcloud services enable SERVICE_NAME",
+            "Check project billing status",
+            "Verify API quotas"
+          ]
+        }
+      ],
+      "monitoring": {
+        "commands": [
+          {
+            "command": "gcloud monitoring dashboards list",
+            "description": "List Cloud Monitoring dashboards"
+          },
+          {
+            "command": "gcloud logging read 'resource.type=gce_instance'",
+            "description": "View Compute Engine logs"
+          }
+        ],
+        "bestPractices": [
+          "Set up log exports to BigQuery",
+          "Configure uptime checks",
+          "Create custom metrics",
+          "Set up alerting policies"
+        ]
+      }
+    }
+  ]
+} 
